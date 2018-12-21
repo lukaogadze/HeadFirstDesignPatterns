@@ -1,0 +1,47 @@
+package ge.gov.smartlogic.command.remotewl;
+
+import ge.gov.smartlogic.command.remotewl.domain.Command;
+import ge.gov.smartlogic.command.remotewl.domain.RemoteControl;
+import ge.gov.smartlogic.command.remotewl.domain.devices.CeilingFan;
+import ge.gov.smartlogic.command.remotewl.domain.devices.GarageDoor;
+import ge.gov.smartlogic.command.remotewl.domain.devices.Light;
+import ge.gov.smartlogic.command.remotewl.domain.devices.Stereo;
+
+public class Main {
+
+    public static void main(String[] args) {
+        RemoteControl remoteControl = new RemoteControl();
+
+        Light livingRoomLight = new Light("Living Room");
+        Light kitchenLight = new Light("Kitchen");
+        CeilingFan ceilingFan = new CeilingFan("Living Room");
+        GarageDoor garageDoor = new GarageDoor("Main house");
+        Stereo stereo = new Stereo("Living Room");
+
+        remoteControl.setCommand(0, livingRoomLight::on, livingRoomLight::off);
+        remoteControl.setCommand(1, kitchenLight::on, kitchenLight::off);
+        remoteControl.setCommand(2, ceilingFan::high, ceilingFan::off);
+
+        Command stereoOnWithCD = () -> {
+            stereo.on();
+            stereo.setCD();
+            stereo.setVolume(11);
+        };
+        remoteControl.setCommand(3, stereoOnWithCD, stereo::off);
+        remoteControl.setCommand(4, garageDoor::up, garageDoor::down);
+
+        System.out.println(remoteControl);
+
+        remoteControl.onButtonWasPushed(0);
+        remoteControl.offButtonWasPushed(0);
+        remoteControl.onButtonWasPushed(1);
+        remoteControl.offButtonWasPushed(1);
+        remoteControl.onButtonWasPushed(2);
+        remoteControl.offButtonWasPushed(2);
+        remoteControl.onButtonWasPushed(3);
+        remoteControl.offButtonWasPushed(3);
+        remoteControl.onButtonWasPushed(4);
+        remoteControl.offButtonWasPushed(4);
+        remoteControl.onButtonWasPushed(5);
+    }
+}
